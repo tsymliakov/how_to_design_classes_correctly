@@ -1,5 +1,6 @@
  АТД BoundedStack
 
+```
 abstract class BoundedStack<T>
 
     public const int POP_NIL = 0; // push() ещё не вызывалась
@@ -42,3 +43,4 @@ abstract class BoundedStack<T>
     public int get_pop_status(); // возвращает значение POP_*
     public int get_peek_status(); // возвращает значение PEEK_*
     public int get_push_status(); // возвращает значение PUSH_*
+```
