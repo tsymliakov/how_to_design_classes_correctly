@@ -1,55 +1,51 @@
 Сама по себе концепция динамического массива заключается в том, что класс содержит внутреннее хранилище и время от времени его увеличивает, или даже и уменьшает.
 
 ``` c#
-abstract class DynArray<T> {
-    // PRIVATE СОСТОЯНИЯ
-    // БУФЕР для хранения большого массива, в котором
-    // предоставляется место для массива по-меньше
-
+abstract class AbstractDynArray<T> {
+    // ВНУТРЕННЕЕ СОСТОЯНИЕ
+    private T buffer[]
+    private int array_size
     private STANDART_CAPACITY = 10
 
-    // СТАТУЫ
-    public GetItem_Ok = 0
-    public GetItem_OutOfRange = 1
+    // СТАТУСЫ
+    public LastGetItem_Ok = 0
+    public LastGetItem_Error = 1
+    private int ReallocationNotNeed = -1
 
     // КОНСТРУКТОР
 
-    public DynArray<T> DynArray()
+    public AbstractDynArray<T> AbstractDynArray(int capacity = STANDART_CAPACITY)
 
     // КОМАНДЫ
 
-    // предусловие: требуется реаллокация, вызывается метод how_much_elements()
+    // предусловие: new_capacity отличается от текущего размера буфера
     // постусловие: все значения внутреннего массива до
     // реаллокации сохранились в неизменном порядке, а сам
     // внутренний массив изменился в размере
-    public void MakeArray(int new_capacity = STANDART_CAPACITY)
+    public void MakeArray(int new_capacity)
 
-    // предусловие: в массиве найдется место для нового
-    // элемента, подразумевается вызов array_has_space()
-    // постусловие: в массив добавлен элемент
+    // предусловие: в буфере найдется место для нового элемента
+    // постусловие: в конец массива добавлен элемент
     public void Append(T itm)
 
-    // предусловие: в буфере найдется место для нового
-    // элемента, подразумевается вызов array_has_space(),
-    // и MakeArray при необходимости
+    // предусловие: в буфере найдется место для нового элемента
     // постусловие: в массив добавлен элемент по указанному
     // индексу
     public void Insert(T itm, int index)
 
-    // предусловие: index в рамках текущего размера массива, НЕ БУФЕРА
+    // предусловие: index < array_size
     // постусловие: элемент по индексу удален, массив сжался,
     // заполнив освободившееся место
     public void Remove(int index)
 
     // ЗАПРОСЫ
 
-    // предусловие: index в рамках текущего размера массива, НЕ БУФЕРА
+    // предусловие: index < array_size
     public T GetItem(int index)
 
     // ДОПОЛНИТЕЛЬНЫЕ ЗАПРОСЫ
-    private int how_much_elements() // возвращает число элементов в массиве
-    private bool array_has_space() // True; False
-    }
-
-    public int get_item_correct() // GetItem_Ok; GetItem_OutOfRange
+    private int estimate_new_size() // размер, до которого требуется
+    // изменить буффер
+    public int get_item_value_correct() // GetItem_Ok; GetItem_OutOfRange
+}
 ```
